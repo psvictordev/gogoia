@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carta entre Plantas</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #fbf6ea;
+    --paper-edge: #efe4cc;
+    --ink: #3b3226;
+    --ink-soft: #6e6250;
+    --leaf: #3f6b3a;
+    --rue: #8fae9a;
+    --wax: #8c2f3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { min-height: 100%; }
+  body {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    color: var(--ink);
+    background: #dfe8d6;
+    overflow-x: hidden;
+  }
+  .bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+  main {
+    position: relative;
+    z-index: 1;
+    padding: 9vh 16px 14vh;
+  }
+  .carta {
+    position: relative;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 64px 72px 72px;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(255,255,255,.7), transparent 45%),
+      radial-gradient(circle at 85% 90%, rgba(214,196,160,.25), transparent 50%),
+      linear-gradient(var(--paper), var(--paper));
+    border: 1px solid var(--paper-edge);
+    border-radius: 3px;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.8) inset,
+      0 30px 60px -20px rgba(30,45,30,.45),
+      0 12px 24px -12px rgba(30,45,30,.35);
+    transform: rotate(-0.6deg);
+  }
+  .carta::before {
+    content: "";
+    position: absolute;
+    inset: 14px;
+    border: 1px solid rgba(110,98,80,.25);
+    pointer-events: none;
+  }
+  .ornamento { display: block; margin: 0 auto 28px; width: 120px; height: auto; }
+  .data {
+    text-align: right;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 1.1rem;
+    margin-bottom: 36px;
+  }
+  .saudacao {
+    font-family: 'Pinyon Script', cursive;
+    font-size: 2.3rem;
+    font-weight: 400;
+    margin-bottom: 22px;
+    color: var(--leaf);
+  }
+  p {
+    font-size: 1.22rem;
+    line-height: 1.75;
+    text-align: justify;
+    hyphens: auto;
+    margin-bottom: 1.1em;
+    text-indent: 1.6em;
+  }
+  p.primeiro { text-indent: 0; }
+  p.primeiro::first-letter {
+    float: left;
+    font-size: 4.2rem;
+    line-height: .85;
+    padding: 6px 10px 0 0;
+    color: var(--leaf);
+    font-weight: 600;
+  }
+  .despedida {
+    margin-top: 40px;
+    text-align: right;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--ink-soft);
+  }
+  .assinatura {
+    font-family: 'Pinyon Script', cursive;
+    font-size: 2.6rem;
+    color: var(--ink);
+    margin-top: 4px;
+  }
+  .ps {
+    margin-top: 40px;
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    text-indent: 0;
+  }
+  .selo {
+    position: absolute;
+    left: 56px;
+    bottom: 48px;
+    width: 78px;
+    height: 78px;
+    transform: rotate(-12deg);
+    filter: drop-shadow(0 3px 4px rgba(0,0,0,.3));
+  }
+  @media (max-width: 640px) {
+    main { padding: 5vh 12px 10vh; }
+    .carta { padding: 44px 28px 56px; transform: none; }
+    .carta::before { inset: 8px; }
+    p { font-size: 1.1rem; }
+    .saudacao { font-size: 2rem; }
+    .selo { width: 58px; height: 58px; left: 28px; bottom: 34px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ FUNDO BOTÂNICO ============ -->
+<svg class="bg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs>
+    <linearGradient id="ceu" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#eef2e6"/>
+      <stop offset="1" stop-color="#cbdac4"/>
+    </linearGradient>
+    <radialGradient id="luz" cx="0.5" cy="0.25" r="0.6">
+      <stop offset="0" stop-color="#fffbe8" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#fffbe8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="agua" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a9cbbd"/>
+      <stop offset="1" stop-color="#44736d"/>
+    </linearGradient>
+    <radialGradient id="padGrad" cx="0.45" cy="0.4" r="0.7">
+      <stop offset="0" stop-color="#8bb35f"/>
+      <stop offset="1" stop-color="#4d7a3a"/>
+    </radialGradient>
+    <linearGradient id="lyreGrad" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#2f5530"/>
+      <stop offset="1" stop-color="#5f9150"/>
+    </linearGradient>
+    <linearGradient id="vaso" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#a65c3c"/>
+      <stop offset=".5" stop-color="#c97a55"/>
+      <stop offset="1" stop-color="#8e4a30"/>
+    </linearGradient>
+
+    <!-- Vitória-régia: folha com borda erguida e fenda -->
+    <g id="pad">
+      <path d="M0,8 L189,2 A190 60 0 1 0 189,14 Z" fill="#7a3038"/>
+      <path d="M0,0 L179,-5 A180 52 0 1 0 179,5 Z" fill="url(#padGrad)"/>
+      <g stroke="#c9dea0" stroke-opacity=".45" stroke-width="2" fill="none">
+        <path d="M0,0 L-170,-16"/><path d="M0,0 L-120,-38"/><path d="M0,0 L-40,-50"/>
+        <path d="M0,0 L50,-49"/><path d="M0,0 L125,-36"/><path d="M0,0 L-150,26"/>
+        <path d="M0,0 L-70,46"/><path d="M0,0 L20,51"/><path d="M0,0 L110,40"/>
+      </g>
+      <ellipse cx="0" cy="0" rx="180" ry="52" fill="none" stroke="#a3c97a" stroke-opacity=".5" stroke-width="2"/>
+    </g>
+
+    <!-- Flor da vitória-régia -->
+    <g id="flor">
+      <g fill="#fdf8f2" stroke="#e8d9cf" stroke-width="1">
+        <ellipse cx="0" cy="-26" rx="9" ry="28" transform="rotate(-75)"/>
+        <ellipse cx="0" cy="-26" rx="9" ry="28" transform="rotate(-50)"/>
+        <ellipse cx="0" cy="-26" rx="9" ry="28" transform="rotate(-25)"/>
+        <ellipse cx="0" cy="-26" rx="9" ry="28"/>
+        <ellipse cx="0" cy="-26" rx="9" ry="28" transform="rotate(25)"/>
+        <ellipse cx="0" cy="-26" rx="9" ry="28" transform="rotate(50)"/>
+        <ellipse cx="0" cy="-26" rx="9" ry="28" transform="rotate(75)"/>
+      </g>
+      <g fill="#f1b6c4" stroke="#d98ea2" stroke-width="1">
+        <ellipse cx="0" cy="-18" rx="7" ry="20" transform="rotate(-40)"/>
+        <ellipse cx="0" cy="-18" rx="7" ry="20" transform="rotate(-14)"/>
+        <ellipse cx="0" cy="-18" rx="7" ry="20" transform="rotate(14)"/>
+        <ellipse cx="0" cy="-18" rx="7" ry="20" transform="rotate(40)"/>
+      </g>
+      <ellipse cx="0" cy="-6" rx="12" ry="6" fill="#e9c35a"/>
+    </g>
+
+    <!-- Folha de figueira-lira (base na origem, apontando para cima) -->
+    <g id="lira">
+      <path d="M0,0 C-20,-10 -30,-30 -28,-50 C-26,-65 -45,-80 -55,-110 C-62,-140 -40,-175 0,-180 C40,-175 62,-140 55,-110 C45,-80 26,-65 28,-50 C30,-30 20,-10 0,0 Z" fill="url(#lyreGrad)"/>
+      <path d="M0,0 L0,-172" stroke="#b9d39a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <g stroke="#a7c787" stroke-opacity=".7" stroke-width="1.5" fill="none">
+        <path d="M0,-40 Q-14,-50 -22,-60"/><path d="M0,-40 Q14,-50 22,-60"/>
+        <path d="M0,-80 Q-24,-92 -42,-108"/><path d="M0,-80 Q24,-92 42,-108"/>
+        <path d="M0,-115 Q-26,-128 -44,-145"/><path d="M0,-115 Q26,-128 44,-145"/>
+        <path d="M0,-145 Q-16,-158 -26,-168"/><path d="M0,-145 Q16,-158 26,-168"/>
+      </g>
+    </g>
+
+    <!-- Figueira-lira completa (lado esquerdo) -->
+    <g id="figueira">
+      <path d="M150,900 C140,700 175,500 142,250" stroke="#6b5a3e" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <path d="M62,900 C72,700 42,550 70,380" stroke="#6b5a3e" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <use href="#lira" transform="translate(62,780) rotate(50) scale(.6)"/>
+      <use href="#lira" transform="translate(60,650) rotate(-55) scale(.7)"/>
+      <use href="#lira" transform="translate(54,560) rotate(40) scale(.7)"/>
+      <use href="#lira" transform="translate(62,470) rotate(-30) scale(.75)"/>
+      <use href="#lira" transform="translate(70,385) rotate(5) scale(.8)"/>
+      <use href="#lira" transform="translate(148,780) rotate(-60) scale(.7)"/>
+      <use href="#lira" transform="translate(154,700) rotate(55) scale(.75)"/>
+      <use href="#lira" transform="translate(162,600) rotate(-50) scale(.8)"/>
+      <use href="#lira" transform="translate(163,520) rotate(45) scale(.8)"/>
+      <use href="#lira" transform="translate(156,430) rotate(-40) scale(.85)"/>
+      <use href="#lira" transform="translate(150,350) rotate(35) scale(.8)"/>
+      <use href="#lira" transform="translate(142,258) rotate(-8) scale(.9)"/>
+    </g>
+
+    <!-- Arruda: trio de folíolos -->
+    <g id="trio">
+      <g fill="#8fae9a" stroke="#6f8f7c" stroke-width=".6">
+        <path d="M0,0 C-6,-6 -8,-16 -4,-22 C-1,-25 1,-25 4,-22 C8,-16 6,-6 0,0Z" transform="rotate(-40)"/>
+        <path d="M0,0 C-6,-6 -8,-16 -4,-22 C-1,-25 1,-25 4,-22 C8,-16 6,-6 0,0Z"/>
+        <path d="M0,0 C-6,-6 -8,-16 -4,-22 C-1,-25 1,-25 4,-22 C8,-16 6,-6 0,0Z" transform="rotate(40)"/>
+      </g>
+    </g>
+    <g id="florzinha">
+      <g fill="#e8c547">
+        <circle cx="0" cy="-4" r="3.2"/><circle cx="3.8" cy="-1.2" r="3.2"/>
+        <circle cx="2.4" cy="3.2" r="3.2"/><circle cx="-2.4" cy="3.2" r="3.2"/>
+        <circle cx="-3.8" cy="-1.2" r="3.2"/>
+      </g>
+      <circle r="2" fill="#a88a1e"/>
+    </g>
+
+    <!-- Arruda no vaso (base do vaso na origem) -->
+    <g id="arruda">
+      <g stroke="#5f7d63" stroke-width="2.4" fill="none" stroke-linecap="round">
+        <path d="M0,-95 C-10,-150 -40,-190 -45,-250"/>
+        <path d="M0,-95 C5,-160 0,-210 5,-280"/>
+        <path d="M0,-95 C15,-150 40,-190 50,-240"/>
+        <path d="M-5,-95 C-30,-130 -60,-150 -75,-190"/>
+        <path d="M5,-95 C30,-125 60,-140 80,-175"/>
+      </g>
+      <g transform="scale(1)">
+        <use href="#trio" transform="translate(-8,-140) rotate(-20) scale(1.3)"/>
+        <use href="#trio" transform="translate(-25,-185) rotate(-25) scale(1.3)"/>
+        <use href="#trio" transform="translate(-40,-225) rotate(-25) scale(1.2)"/>
+        <use href="#trio" transform="translate(-45,-250) rotate(-10) scale(1.1)"/>
+        <use href="#trio" transform="translate(2,-150) scale(1.3)"/>
+        <use href="#trio" transform="translate(2,-200) scale(1.3)"/>
+        <use href="#trio" transform="translate(3,-245) scale(1.2)"/>
+        <use href="#trio" transform="translate(5,-280) scale(1.1)"/>
+        <use href="#trio" transform="translate(12,-140) rotate(20) scale(1.3)"/>
+        <use href="#trio" transform="translate(30,-185) rotate(30) scale(1.3)"/>
+        <use href="#trio" transform="translate(45,-220) rotate(30) scale(1.2)"/>
+        <use href="#trio" transform="translate(-30,-130) rotate(-45) scale(1.2)"/>
+        <use href="#trio" transform="translate(-55,-155) rotate(-40) scale(1.2)"/>
+        <use href="#trio" transform="translate(-72,-185) rotate(-35) scale(1.1)"/>
+        <use href="#trio" transform="translate(30,-125) rotate(50) scale(1.2)"/>
+        <use href="#trio" transform="translate(58,-142) rotate(50) scale(1.2)"/>
+        <use href="#trio" transform="translate(78,-172) rotate(45) scale(1.1)"/>
+      </g>
+      <use href="#florzinha" transform="translate(-46,-272)"/>
+      <use href="#florzinha" transform="translate(-36,-280)"/>
+      <use href="#florzinha" transform="translate(5,-304)"/>
+      <use href="#florzinha" transform="translate(15,-298)"/>
+      <use href="#florzinha" transform="translate(52,-262)"/>
+      <use href="#florzinha" transform="translate(-80,-212)"/>
+      <path d="M-70,0 L-55,-80 L55,-80 L70,0Z" fill="url(#vaso)"/>
+      <rect x="-62" y="-97" width="124" height="20" rx="3" fill="#b8694a"/>
+      <rect x="-62" y="-97" width="124" height="5" rx="2" fill="#d58d69" opacity=".7"/>
+    </g>
+
+    <!-- Folhas pendentes do topo -->
+    <g id="topo">
+      <use href="#lira" transform="translate(320,-30) rotate(165) scale(.9)"/>
+      <use href="#lira" transform="translate(420,-40) rotate(200) scale(.7)"/>
+      <use href="#lira" transform="translate(230,-20) rotate(140) scale(.75)"/>
+      <use href="#trio" transform="translate(500,20) rotate(180) scale(1.6)"/>
+      <use href="#trio" transform="translate(520,50) rotate(160) scale(1.4)"/>
+      <path d="M480,-5 C490,20 505,40 525,60" stroke="#5f7d63" stroke-width="2" fill="none"/>
+    </g>
+  </defs>
+
+  <!-- céu e luz -->
+  <rect width="1440" height="900" fill="url(#ceu)"/>
+  <rect width="1440" height="900" fill="url(#luz)"/>
+
+  <!-- água -->
+  <path d="M0,620 Q360,598 720,614 T1440,608 L1440,900 L0,900Z" fill="url(#agua)"/>
+  <g fill="none" stroke="#ffffff" stroke-opacity=".28" stroke-width="2">
+    <ellipse cx="520" cy="660" rx="90" ry="10"/>
+    <ellipse cx="900" cy="740" rx="120" ry="12"/>
+    <ellipse cx="700" cy="830" rx="150" ry="14"/>
+    <ellipse cx="1200" cy="690" rx="80" ry="8"/>
+    <ellipse cx="380" cy="760" rx="70" ry="7"/>
+  </g>
+
+  <!-- vitórias-régias -->
+  <use href="#pad" transform="translate(560,642) scale(.42)"/>
+  <use href="#pad" transform="translate(860,650) scale(.5)"/>
+  <use href="#pad" transform="translate(1180,668) scale(.55)"/>
+  <use href="#pad" transform="translate(430,695) scale(.7)"/>
+  <use href="#pad" transform="translate(1010,705) scale(.8)"/>
+  <use href="#pad" transform="translate(720,765) scale(1.1)"/>
+  <use href="#pad" transform="translate(300,825) scale(1)"/>
+  <use href="#pad" transform="translate(1150,835) scale(1.05)"/>
+  <use href="#pad" transform="translate(620,880) scale(.95)"/>
+  <use href="#flor" transform="translate(760,748) scale(1.1)"/>
+  <use href="#flor" transform="translate(1030,692) scale(.85)"/>
+  <use href="#flor" transform="translate(320,808) scale(1)"/>
+  <use href="#flor" transform="translate(870,642) scale(.55)"/>
+
+  <!-- figueiras-lira -->
+  <use href="#figueira"/>
+  <use href="#figueira" transform="translate(1440,0) scale(-1,1)"/>
+
+  <!-- folhas do topo -->
+  <use href="#topo"/>
+  <use href="#topo" transform="translate(1440,0) scale(-1,1)"/>
+
+  <!-- arrudas em vasos -->
+  <use href="#arruda" transform="translate(300,915) scale(.95)"/>
+  <use href="#arruda" transform="translate(1140,915) scale(-.95,.95)"/>
+</svg>
+
+<!-- ============ CARTA ============ -->
+<main>
+  <article class="carta">
+    <svg class="ornamento" viewBox="-60 -40 120 50" aria-hidden="true">
+      <path d="M-55,0 L55,0" stroke="#8fae9a" stroke-width="1"/>
+      <use href="#trio" transform="translate(-20,0) rotate(-70) scale(1)"/>
+      <use href="#trio" transform="translate(20,0) rotate(70) scale(1)"/>
+      <use href="#florzinha" transform="translate(0,-14) scale(1.4)"/>
+    </svg>
+
+    <div class="data">12 de dezembro de 2025</div>
+
+    <h1 class="saudacao">Carta aberta:</h1>
+
+    <p class="primeiro">Muito obrigado!</p>
+
+    <p>Não teria outra forma de começar, sem antes agradecer. Muito obrigado!</p>
+
+    <p>Ano movimentado, hein! Alguns ciclones e tempestades pelo mundo, mas estamos mais fortes, com cicatrizes novas, mais fios brancos indisciplinados e com o mesmo sentimento de respeito um para com o outro.</p>
+
+    <p>Garantindo meu ticket para o próximo ano, preciso dizer que te respeito, te admiro e te amo. “O mesmo tanto” que sou chato e doido.</p>
+
+    <p>Se eu tiver espaço para pedir algo seria: quero continuar fazendo parte da tua história.</p>
+
+    <p>Te amo, era só isso.</p>
+
+    <div class="despedida">
+      Att,
+      <div class="assinatura">Victor Silva</div>
+      12/12/2025
+    </div>
+
+    <svg class="selo" viewBox="-50 -50 100 100" aria-hidden="true">
+      <path d="M0,-46 C14,-48 22,-40 32,-34 C44,-28 48,-14 46,0 C48,14 42,26 32,34 C22,44 12,48 0,46 C-14,48 -26,42 -34,32 C-44,22 -48,10 -46,-2 C-48,-16 -40,-28 -30,-36 C-22,-44 -12,-46 0,-46Z" fill="#8c2f3a"/>
+      <circle r="33" fill="none" stroke="#6d2029" stroke-width="2"/>
+      <circle r="33" fill="none" stroke="#b0505c" stroke-width="1" opacity=".6" transform="translate(-1,-1)"/>
+      <g transform="translate(0,16) scale(.28)" opacity=".85">
+        <path d="M0,0 C-20,-10 -30,-30 -28,-50 C-26,-65 -45,-80 -55,-110 C-62,-140 -40,-175 0,-180 C40,-175 62,-140 55,-110 C45,-80 26,-65 28,-50 C30,-30 20,-10 0,0 Z" fill="#6d2029"/>
+        <path d="M0,0 L0,-172" stroke="#b0505c" stroke-width="5"/>
+      </g>
+    </svg>
+  </article>
+</main>
+
+</body>
+</html>
