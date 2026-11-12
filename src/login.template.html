@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entrar</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root { --paper:#fbf6ea; --ink:#3b3226; --leaf:#3f6b3a; --wax:#8c2f3a; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { min-height:100vh; display:grid; place-items:center; padding:16px;
+         font-family:'Cormorant Garamond',Georgia,serif; color:var(--ink); background:#dfe8d6; }
+  form { width:100%; max-width:340px; background:var(--paper); padding:32px 28px; border-radius:6px;
+         box-shadow:0 10px 30px rgba(59,50,38,.18); display:grid; gap:14px; }
+  h1 { font-weight:600; font-size:1.7rem; text-align:center; }
+  label { display:grid; gap:4px; font-size:1.05rem; }
+  input { font:inherit; padding:8px 10px; border:1px solid #cdbf9f; border-radius:4px; background:#fff; color:var(--ink); }
+  button { font:inherit; font-weight:600; padding:10px; border:0; border-radius:4px; background:var(--leaf); color:#fff; cursor:pointer; }
+  button:disabled { opacity:.6; cursor:wait; }
+  #err { min-height:1.2em; color:var(--wax); text-align:center; font-size:1rem; }
+</style>
+</head>
+<body>
+<form id="f" autocomplete="on">
+  <h1>Carta entre Plantas</h1>
+  <label>Usuário <input id="u" name="username" autocomplete="username" required autofocus></label>
+  <label>Senha <input id="p" name="password" type="password" autocomplete="current-password" required></label>
+  <button id="b">Entrar</button>
+  <div id="err" role="alert"></div>
+</form>
+
+<script>
+// ---------- Banco: usuários cifrados, gerado por build.mjs ----------
+const DB = /*__DB__*/null;
+
+// ---------- Política ABAC: fonte única de verdade ----------
+// Cada regra decide por atributos do sujeito, da ação e do recurso.
+const POLICY = [
+  { action: 'view', resource: 'carta', allow: (s) => ['viewer', 'admin'].includes(s.role) },
+];
+
+// ---------- Camada de serviço ----------
+const enc = new TextEncoder();
+const unb64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+const b64 = (buf) => btoa(String.fromCharCode(...new Uint8Array(buf)));
+
+const PolicyService = {
+  can(subject, action, resource) {
+    return POLICY.some((r) => r.action === action && r.resource === resource && r.allow(subject));
+  },
+};
+
+const UserRepository = {
+  async find(user) {
+    const h = b64(await crypto.subtle.digest('SHA-256', enc.encode(user.toLowerCase())));
+    return DB.users[h] || null;
+  },
+};
+
+const AuthService = {
+  async login(user, pass) {
+    const rec = await UserRepository.find(user);
+    if (!rec) throw new Error('invalid');
+    const base = await crypto.subtle.importKey('raw', enc.encode(`${user}\n${pass}`), 'PBKDF2', false, ['deriveKey']);
+    const key = await crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt: unb64(DB.salt), iterations: DB.iter, hash: 'SHA-256' },
+      base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+    let plain;
+    try {
+      plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(rec.iv) }, key, unb64(rec.ct));
+    } catch { throw new Error('invalid'); }
+    const { attrs, html } = JSON.parse(new TextDecoder().decode(plain));
+    if (!PolicyService.can(attrs, 'view', 'carta')) throw new Error('forbidden');
+    return html;
+  },
+};
+
+// ---------- UI ----------
+const f = document.getElementById('f'), err = document.getElementById('err'), btn = document.getElementById('b');
+f.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  err.textContent = ''; btn.disabled = true;
+  try {
+    const html = await AuthService.login(f.u.value.trim(), f.p.value);
+    document.open(); document.write(html); document.close();
+  } catch (x) {
+    err.textContent = x.message === 'forbidden' ? 'Sem permissão para ver esta página.' : 'Usuário ou senha inválidos.';
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
